@@ -10,14 +10,13 @@ export var getUsers = async (req, res) => {
     }
 }
 
-export const createUser = async (req, res) => {
-    const body = req.body;
-    const newUser = new User(body);
+export const createUser = async (data) => {
+    const newUser = new User(data);
     try {
         await newUser.save();
-        res.status(201).json(newUser);
+        console.log('User created');
     }   
     catch (error) {
-        res.status(404).json({ message: error.message});
+        console.log(error.message);
     }
 }
