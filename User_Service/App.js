@@ -8,7 +8,8 @@ import getUsers from "./routes/user_routes.js"
 import getUser from "./routes/user_routes.js"
 import createUser from "./routes/user_routes.js"
 import deleteUser from "./routes/user_routes.js"
-import { rabbitConnect } from "./message_bus/massage_bus.js"
+import updateUser from "./routes/user_routes.js"
+import { rabbitConnect } from "./message_bus/message_bus.js"
 
 if (process.env.NODE_ENV == "prod") {
     process.env['RABBITMQ_URL'] = 'rabbitmq-clusterip-srv'
@@ -26,6 +27,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', getUsers);
 app.use('/', getUser);
 app.use('/', createUser);
+app.use('/', updateUser);
 app.use('/', deleteUser);
 
 const CONNECTION_URL = 'mongodb+srv://admin:admin@cluster0.ddvsetx.mongodb.net/?retryWrites=true&w=majority';

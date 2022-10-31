@@ -1,6 +1,5 @@
 import User from '../models/user.js';
-import axios from 'axios';
-import { sendToQueue } from '../message_bus/massage_bus.js';
+import { sendToQueue } from '../message_bus/message_bus.js';
 
 export const getUsers = async (req, res) => {
     try {
@@ -30,10 +29,31 @@ export const createUser = async (req, res) => {
     try {
         // Use save() to create a new user to the database
         await newUser.save();
+        sendToQueue('user_created',newUser);
         res.status(201).json(newUser);
     }   
     catch (error) {
         res.status(404).json({ message: error.message});
+    }
+}
+
+export const updateUser = async (req, res) => {
+    const body = req.body;
+    const newUser = new User(body);
+    try {
+
+        sendToQueue('user_updated',newUser);
+        try {
+            // Use findByIdAndUpdate() to update a user in the database
+            await User.findByIdAndUpdate(req.params.id, newUser);
+            res.status(201).json(newUser);
+        }
+        catch (error) {
+            res.status(404).json({ message: error.message});
+        }
+
+    } catch (error) {
+        console.log(error.message);
     }
 }
 

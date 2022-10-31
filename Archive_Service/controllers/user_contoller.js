@@ -20,3 +20,14 @@ export const createUser = async (data) => {
         console.log(error.message);
     }
 }
+
+export const updateUser = async (data) => {
+    const newUser = new User(data);
+    try {
+        await User.findByIdAndUpdate(data._id, newUser);
+        console.log('User updated');
+    }
+    catch (error) {
+        console.log(error.message);
+    }
+}
